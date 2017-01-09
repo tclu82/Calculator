@@ -7,7 +7,7 @@
 //
 
 import Foundation
-/////////////////////////////
+
 // Optional is an enum, here is it's source code looks like
 //enum Optional<T> {
 //    case None
