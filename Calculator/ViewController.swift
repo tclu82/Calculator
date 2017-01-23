@@ -2,6 +2,9 @@
 //  ViewController.swift
 //  Calculator
 //
+//  This project is reproduced from Stanford - Stanford - Developing iOS 9 Apps with Swift
+//  https://www.youtube.com/watch?v=jcxp1bbXbL4&index=4&list=PLsJq-VuSo2k26duIWzNjXztkZ7VrbppkT
+//
 //  Created by Zac on 9/13/16.
 //  Copyright © 2016 Zac.com. All rights reserved.
 //
@@ -47,6 +50,24 @@ class ViewController: UIViewController {
     
     //    private var brain: CalculatorBrain = CalculatorBrain()
     private var brain = CalculatorBrain()
+    // PropertyList is AnyObject type
+    var saveProgram: CalculatorBrain.PropertyList?
+    
+    @IBAction func save()
+    {
+        saveProgram = brain.program
+    }
+    
+    @IBAction func restore()
+    {
+        if saveProgram != nil
+        {
+            brain.program = saveProgram!
+            
+            displayValue = brain.result
+        }
+    }
+    
     
     @IBAction private func performOperation(_ sender: UIButton)
     {

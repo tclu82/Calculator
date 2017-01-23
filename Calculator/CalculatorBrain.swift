@@ -2,6 +2,9 @@
 //  CalculatorBrain.swift
 //  Calculator
 //
+//  This project is reproduced from Stanford - Stanford - Developing iOS 9 Apps with Swift
+//  https://www.youtube.com/watch?v=jcxp1bbXbL4&index=4&list=PLsJq-VuSo2k26duIWzNjXztkZ7VrbppkT
+//
 //  Created by Zac on 9/15/16.
 //  Copyright © 2016 Zac.com. All rights reserved.
 //
@@ -24,9 +27,13 @@ class CalculatorBrain {
     
     private var accumulator = 0.0
     
+    private var internalProgram = [AnyObject]()
+    
     func setOperand(operand: Double)
     {
         accumulator = operand
+        
+        internalProgram.append(operand as AnyObject)
     }
     
     // Dictonary = Map in Java
@@ -73,6 +80,8 @@ class CalculatorBrain {
     // Perform operation by passing enum Operation
     func performOperation(symbol: String)
     {
+        internalProgram.append(symbol as AnyObject)
+        
         if let operation = operations[symbol]
         {   // Only 4 operations here, no need default
             switch operation
@@ -121,6 +130,44 @@ class CalculatorBrain {
         var binaryFunction: (Double, Double) -> Double
         
         var firstOperand: Double
+    }
+    
+    typealias PropertyList = AnyObject
+    
+    var program: PropertyList {
+        
+        get
+        {   // internalProgram is an array, which is a value type -> it returns a copy, not reference
+           return internalProgram as CalculatorBrain.PropertyList
+        }
+        set
+        {
+            clear()
+            
+            if let arrayOfOps = newValue as? [AnyObject]
+            {
+                for op in arrayOfOps
+                {
+                    if let operand = op as? Double
+                    {
+                        setOperand(operand: operand)
+                    }
+                    else if let operand = op as? String
+                    {
+                        performOperation(symbol: operand)
+                    }
+                }
+            }
+        }
+    }
+    
+    private func clear() {
+        
+        accumulator = 0.0
+        
+        pending = nil
+        
+        internalProgram.removeAll()
     }
     
     // Read-only property
